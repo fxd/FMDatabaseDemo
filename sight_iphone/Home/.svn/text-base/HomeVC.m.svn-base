@@ -1,0 +1,85 @@
+//
+//  HomeVC.m
+//  sight_iphone
+//
+//  Created by fengshaobo on 15/4/5.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+#import "HomeVC.h"
+
+#import "UITableView+Utility.h"
+#import "BookCell.h"
+#import "BookDetailVC.h"
+
+
+#define kBookImageKey       @"key:book_image"
+#define kBookNameKey        @"key:book_name"
+#define kBookAuthorKey      @"key:book_author"
+
+@interface HomeVC ()
+
+@end
+
+@implementation HomeVC
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self layoutRootViewDefault:self.view];
+    [naviBar setTitle:@"目录"];
+    [self stopLoading:YES];
+    
+    self.table.frame = viewContent.bounds;
+    [viewContent addSubview:self.table];
+    
+    NSDictionary *rework = [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"Rework",kBookNameKey,
+                            @"37signals",kBookAuthorKey,
+                            img_book_rework,kBookImageKey,
+                            nil];
+    self.books = [NSMutableArray arrayWithObjects:rework, nil];
+
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UITableViewDelegate
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.books count];
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSDictionary *book = self.books[indexPath.row];
+    
+    BookCell *cell = [tableView cellForNibName:@"BookCell"];
+    cell.bookIcon.image = [UIImage imageNamed:book[kBookImageKey]];
+    cell.bookName.text = book[kBookNameKey];
+    cell.author.text = book[kBookAuthorKey];
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    BookDetailVC *bookDetailVC = [[BookDetailVC alloc] initWithName:kBookDetailVC];
+    [[VCManager mainVCC] pushVC:bookDetailVC WithAnimation:[VCAnimationClassic defaultAnimation]];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60;
+}
+
+
+@end

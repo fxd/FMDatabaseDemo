@@ -1,0 +1,19 @@
+//
+//  TestResult.m
+//  byy_iphone
+//
+//  Created by fengshaobo on 15/3/7.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+#import "TestResult.h"
+
+@implementation TestResult
+
+@end
+
+
+
+@implementation Testinfo
+
+@end

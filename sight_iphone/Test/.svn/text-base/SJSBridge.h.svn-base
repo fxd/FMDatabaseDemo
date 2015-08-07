@@ -1,0 +1,36 @@
+//
+//  SJSBridge.h
+//  sight_iphone
+//
+//  Created by fengshaobo on 15/5/3.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@class SJSBridge;
+
+@protocol SJSBridgeDelegate <UIWebViewDelegate>
+
+- (void)jsBridge:(SJSBridge *)bridge
+didReceivedNotificationName:(NSString*)name
+        userInfo:(NSDictionary*)userInfo
+     fromWebView:(UIWebView*)webview;
+
+@end
+
+
+@interface SJSBridge : NSObject <UIWebViewDelegate>
+{
+    NSMutableDictionary *_infoList;
+}
+
+@property (nonatomic, assign) IBOutlet id <SJSBridgeDelegate> delegate;
+
++ (id)jsBridgeWithDelegate:(id <SJSBridgeDelegate>)delegate;
+
+- (void)postNotificationName:(NSString *)name
+                    userInfo:(NSDictionary*)userInfo
+                   toWebView:(UIWebView *)webView;
+
+@end

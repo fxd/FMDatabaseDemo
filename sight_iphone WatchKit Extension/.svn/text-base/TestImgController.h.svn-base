@@ -1,0 +1,15 @@
+//
+//  TestImgController.h
+//  WatchDemo
+//
+//  Created by fengshaobo on 15/4/11.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+//#import <WatchKit/WatchKit.h>
+//#import <Foundation/Foundation.h>
+@import WatchKit;
+
+@interface TestImgController : WKInterfaceController
+
+@end

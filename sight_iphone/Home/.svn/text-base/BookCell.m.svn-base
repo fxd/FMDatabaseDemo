@@ -1,0 +1,28 @@
+//
+//  BookCell.m
+//  sight_iphone
+//
+//  Created by fengshaobo on 15/4/7.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+#import "BookCell.h"
+
+@implementation BookCell
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    self.bookIcon.layer.masksToBounds = YES;
+    self.bookIcon.layer.cornerRadius = 1;
+    
+    self.bookName.textColor = [UIColor ssTextBlackColor];
+    self.author.textColor = [UIColor qunarTextGrayColor];
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+@end

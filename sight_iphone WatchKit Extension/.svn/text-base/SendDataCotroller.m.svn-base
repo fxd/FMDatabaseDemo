@@ -1,0 +1,71 @@
+//
+//  SendDataCotroller.m
+//  sight_iphone
+//
+//  Created by fengshaobo on 15/4/26.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+#import "SendDataCotroller.h"
+
+@interface SendDataCotroller ()
+
+@property (nonatomic, assign) NSInteger counter;
+
+@end
+
+@implementation SendDataCotroller
+
+- (void)awakeWithContext:(id)context {
+    [super awakeWithContext:context];
+    
+    [self.button setWidth:100];
+    [self.button setHeight:100];
+    
+    
+    // Configure interface objects here.
+    NSLog(@"%@ awakeWithContext", self);
+    self.counter = 0;
+}
+
+- (void)willActivate {
+    // This method is called when watch view controller is about to be visible to user
+    NSLog(@"%@ will activate", self);
+}
+
+- (void)didDeactivate {
+    // This method is called when watch view controller is no longer visible
+    NSLog(@"%@ did deactivate", self);
+}
+
+#pragma mark - Button actions
+
+- (IBAction)incrementCounter {
+    self.counter++;
+    [self setCounterLabelText];
+}
+- (IBAction)saveCounter {
+    //Send count to parent application
+    NSString *counterString = [NSString stringWithFormat:@"%ld", (long)self.counter];
+    NSDictionary *applicationData = [[NSDictionary alloc] initWithObjects:@[counterString] forKeys:@[@"counterValue"]];
+    
+    //Handle reciever in app delegate of parent app
+    [WKInterfaceController openParentApplication:applicationData reply:^(NSDictionary *replyInfo, NSError *error) {
+        NSLog(@"%@ %@",replyInfo, error);
+    }];
+}
+- (IBAction)clearCounter {
+    self.counter = 0;
+    [self setCounterLabelText];
+}
+
+#pragma mark - Helper methods
+
+- (void)setCounterLabelText {
+    [self.counterLabel setText:[NSString stringWithFormat:@"%ld", (long)self.counter]];
+}
+
+@end
+
+
+

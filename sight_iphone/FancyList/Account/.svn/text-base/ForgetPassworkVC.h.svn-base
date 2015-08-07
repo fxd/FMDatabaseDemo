@@ -1,0 +1,17 @@
+//
+//  ForgetPassworkVC.h
+//  sight_iphone
+//
+//  Created by fengshaobo on 15/4/22.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+#import "LoadNaviVC.h"
+
+@interface ForgetPassworkVC : LoadNaviVC
+
+@property (weak, nonatomic) IBOutlet UIView *bgView;          // 背景
+@property (weak, nonatomic) IBOutlet UITextField *emailTf;          // 电子邮件
+@property (weak, nonatomic) IBOutlet UIButton *resetPassworkBtn;                // 登录
+
+@end

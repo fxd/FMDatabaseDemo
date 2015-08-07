@@ -1,0 +1,32 @@
+//
+//  SPickerView.h
+//  Sight
+//
+//  Created by fengshaobo on 15/4/27.
+//  Copyright (c) 2015年 Qunar.com. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+typedef NS_ENUM(NSUInteger, ToolBarButtonType) {
+    EToolBarLeftButton = 0,
+    EToolBarRightButton
+};
+
+typedef void(^SPickerViewBlock)(NSMutableDictionary *dict);
+
+@interface SPickerView : UIView<UIPickerViewDelegate, UIPickerViewDataSource>
+
+@property (nonatomic, strong) UIPickerView *picker;
+@property (nonatomic, strong) UIView *toolBar;
+@property (nonatomic, strong) UIControl *bg;
+
+@property (nonatomic, copy) SPickerViewBlock pickerViewBlock;
+
+@property (nonatomic, strong) NSArray *pickerData;
+@property (nonatomic, strong) NSMutableDictionary *selectDict;
+
+- (void)show;
+- (void)dismiss;
+
+@end

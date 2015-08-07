@@ -1,0 +1,351 @@
+//
+//  HomeVC.m
+//  byy
+//
+//  Created by fengshaobo on 12-11-13.
+//  Copyright (c) 2012年 byy.com All rights reserved.
+//
+
+#import "MainTabVC.h"
+#import "TabBarHomeItem.h"
+#import "TabBar.h"
+#import "TabBarHomeAnimationItem.h"
+
+#import "FavoriteVC.h"
+#import "HomeVC.h"
+#import "SettingVC.h"
+#import "WordsVC.h"
+
+#import "VCManager.h"
+#import "UIView+Utility.h"
+#import "HomePtc.h"
+#import "AppUtils.h"
+
+
+#import "DatabaseUtils.h"
+#import "DatabaseConstants.h"
+#import "SQLManager.h"
+#import "BookInfo.h"
+
+#define kLocationPurposeTypeHomeHNight	@"HomeHNight"
+
+@interface MainTabVC ()
+
+@end
+
+@implementation MainTabVC
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	
+    _tabBarIndex = eHomeIndex;
+
+    
+    // Tabbar
+    _tabBar = [[TabBar alloc] initHomeWithFrame:CGRectZero];
+    [_tabBar setFrame:CGRectMake(0, self.view.height - [_tabBar frame].size.height, self.view.width, 0)];
+    [_tabBar setDelegate:self];
+    [self setupTabbarSubs:_tabBar];
+    [self.view addSubview:_tabBar];
+    
+    // ScrollView
+    _viewContent = [[UIView alloc] initWithFrame:CGRectZero];
+    [_viewContent setFrame:CGRectMake(0, 0, self.view.width, self.view.height - self.tabBar.height)];
+    [self setupViewContentSubs:_viewContent];
+    [self.view addSubview:_viewContent];
+    
+    // 将TabBar位置提前
+    [self.view bringSubviewToFront:_tabBar];
+	
+#warning todo:test
+    [self testDatabase];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    if([[VCManager mainVCC] isTopVCWithObject:self])
+	{
+		if (_tabBarIndex == 2)
+		{
+			// 设置StatusBar
+			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+		}
+		else
+		{
+			// 设置StatusBar
+			[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+		}
+        
+    }
+    
+}
+
+
+
+//home界面消失时，顶部banner停止动画
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+}
+
+- (void)dealloc
+{
+
+}
+
+
+
+//指定显示页
+- (void)changeToVCIndex:(TabType)indexNew
+{
+    if(indexNew == _tabBarIndex) {
+        return;
+    }
+    
+    // 修改TabBar焦点
+    [_tabBar setSelectedItemIndex:indexNew];
+    
+	// 修改VC的显示
+    [[self.homeVC view] setHidden:((indexNew == eHomeIndex) ? NO : YES)];
+    [[self.favoriteVC view] setHidden:((indexNew == eFavIndex) ? NO : YES)];
+    [[self.wordsVC view] setHidden:((indexNew == eWordsIndex) ? NO : YES)];
+    [[self.settingVC view] setHidden:((indexNew == eSettingIndex) ? NO : YES)];
+
+    // 刷新界面
+    [self refreshForChangeToVCIndex:indexNew];
+    
+    _tabBarIndex = indexNew;
+}
+
+// 刷新
+- (void)refreshForChangeToVCIndex:(NSUInteger)indexNew
+{
+	// From VC
+	UIViewController *vcFrom = nil;
+    if(_tabBarIndex == eHomeIndex) {
+        vcFrom = self.homeVC;
+    }
+	else if(_tabBarIndex == eFavIndex) {
+		vcFrom = self.favoriteVC;
+	}
+    else if(_tabBarIndex == eWordsIndex) {
+        vcFrom = self.wordsVC;
+    }
+	else if(_tabBarIndex == eSettingIndex) {
+		vcFrom = self.settingVC;
+    }
+	
+	// To VC
+	UIViewController *vcTo = nil;
+    if(indexNew == eHomeIndex) {
+        vcTo = self.homeVC;
+    }
+    else if(indexNew == eFavIndex) {
+		vcTo = self.favoriteVC;
+	}
+	else if(indexNew == eWordsIndex) {
+		vcTo = self.wordsVC;
+    }
+    else if(indexNew == eSettingIndex) {
+        vcTo = self.settingVC;
+    }
+    
+	// 触发消息
+	if([vcFrom conformsToProtocol:@protocol(HomePtc)])
+	{
+		if([vcFrom respondsToSelector:@selector(vcDisappear)])
+		{
+            if (_tabBarIndex != indexNew) {
+                [vcFrom performSelector:@selector(vcDisappear)];
+            }
+		}
+	}
+	
+	if([vcTo conformsToProtocol:@protocol(HomePtc)])
+	{
+		if([vcTo respondsToSelector:@selector(vcAppear)])
+		{
+			[vcTo performSelector:@selector(vcAppear)];
+		}
+	}
+}
+
+- (void)testDatabase
+{
+    NSLog(@"path = %@",[AppUtils documentPath]);
+
+    // 加载主题列表
+    
+    [SQLManager initDatabase];
+    
+    //[self getInfoFlowFromlocal];
+}
+-(NSArray*)getInfoFlowFromlocal
+{
+    NSMutableArray *array = [NSMutableArray array];
+    
+    FMDatabaseQueue *dbQueue = [DatabaseUtils databaseQueueWithName:BooksDatabase];
+    [dbQueue inDatabase:^(FMDatabase *db) {
+        FMResultSet *rs = [db queryFromTable:ReworkTable
+                                 columnNames:nil
+                                       where:nil
+                                   whereArgs:nil
+                                     orderby:nil
+                                     groupby:nil
+                                       limit:nil];
+        while ([rs next]) {
+            //            MXNewsItem *item    = [[MXNewsItem alloc] init];
+            //            item.itemId         = [rs stringForColumn:MXNewsItemColumnId];
+            //            item.feedId         = [rs stringForColumn:MXNewsItemColumnSectionId];
+            //            item.type           = [rs stringForColumn:MXNewsItemColumnType];
+            //            item.itemTitle      = [rs stringForColumn:MXNewsItemColumnTitle];
+            //            item.itemLink       = [rs stringForColumn:MXNewsItemColumnFromUrl];
+            //            item.itemContent    = [rs stringForColumn:MXNewsItemColumnSummary];
+            //            item.itemSource     = [rs stringForColumn:MXNewsItemColumnSource];
+            //            item.itemAuthor     = [rs stringForColumn:MXNewsItemColumnCreater];
+            //            item.createTime     = [rs doubleForColumn:MXNewsItemColumnUpdateTime];
+            //            item.itemIcon       = [rs stringForColumn:MXNewsItemColumnIconUrl];
+            //            item.hasRead        = [rs boolForColumn:MXNewsItemColumnHasRead];
+            //            item.like           = [rs intForColumn:MXNewsItemColumnOperation] & 3;//只取最后两位
+            //            //TODO:改为枚举比较好
+            //            item.itemFavIcon    = [self favIconOfSuggestionItem:item];
+            //            item.feedTitle      = [self sectionTitleOfSuggestionItem:item];
+            //            [array addObject:item];
+        }
+    }];
+    return array;
+}
+
+
+// 创建ScrollView的子界面
+- (void)setupViewContentSubs:(UIView *)viewParent
+{
+    // home vc
+    self.homeVC = [[HomeVC alloc] initWithName:@"" andFrame:CGRectMake(0, 0, viewParent.width, viewParent.height)];
+    if([self.homeVC isViewLoaded] == NO) {
+        [self.homeVC view];
+    }
+    [[self.homeVC view] setHidden:((_tabBarIndex == eHomeIndex) ? NO : YES)];
+    [viewParent addSubview:[self.homeVC view]];
+ 
+    
+    // favorite vc
+	self.favoriteVC = [[FavoriteVC alloc] initWithName:@"" andFrame:CGRectMake(0, 0, viewParent.width, viewParent.height)];
+	if([self.favoriteVC isViewLoaded] == NO) {
+		[self.favoriteVC view];
+	}
+    [[self.favoriteVC view] setHidden:((_tabBarIndex == eFavIndex) ? NO : YES)];
+	[viewParent addSubview:[self.favoriteVC view]];
+	   
+    
+    // words vc
+    self.wordsVC = [[WordsVC alloc] initWithName:@"" andFrame:CGRectMake(0, 0, viewParent.width, viewParent.height)];
+    if([self.wordsVC isViewLoaded] == NO) {
+        [self.wordsVC view];
+    }
+    [[self.wordsVC view] setHidden:((_tabBarIndex == eWordsIndex) ? NO : YES)];
+    [viewParent addSubview:[self.wordsVC view]];
+
+    
+    // setting vc
+	self.settingVC = [[SettingVC alloc] initWithName:@"" andFrame:CGRectMake(0, 0, viewParent.width, viewParent.height)];
+	if([self.settingVC isViewLoaded] == NO) {
+		[self.settingVC view];
+	}
+	[[self.settingVC view] setHidden:((_tabBarIndex == eSettingIndex) ? NO : YES)];
+	
+    
+	// 添加到父窗口
+	[viewParent addSubview:[self.settingVC view]];
+
+}
+
+// 创建TabBar的子界面
+- (void)setupTabbarSubs:(TabBar *)viewParent
+{
+    // 首页
+    TabBarHomeItem *barItemHome = [[TabBarHomeItem alloc] initWithText:@"书库"
+                                                              andImage:[UIImage imageNamed:img_home_normal]
+                                                        andSelectImage:[UIImage imageNamed:img_home_highlight]];
+    [viewParent insertItem:barItemHome atIndex:eHomeIndex];
+    
+    // 收藏
+	TabBarHomeItem *barItemFavorite = [[TabBarHomeItem alloc] initWithText:@"收藏"
+                                                               andImage:[UIImage imageNamed:nil]
+                                                         andSelectImage:[UIImage imageNamed:nil]];
+	[viewParent insertItem:barItemFavorite atIndex:eFavIndex];
+    
+    // 单词
+    TabBarHomeItem *barItemWords = [[TabBarHomeItem alloc] initWithText:@"单词"
+                                                              andImage:[UIImage imageNamed:nil]
+                                                        andSelectImage:[UIImage imageNamed:nil]];
+    [viewParent insertItem:barItemWords atIndex:eWordsIndex];
+    
+    
+    // 设置
+//    NSMutableArray *arrayImageView = [[NSMutableArray alloc] init];
+//    [arrayImageView addObject:[UIImage imageNamed:kHomeMainVoice1ImageFile]];
+//    [arrayImageView addObject:[UIImage imageNamed:kHomeMainVoice2ImageFile]];
+//    [arrayImageView addObject:[UIImage imageNamed:kHomeMainVoice3ImageFile]];
+//    [arrayImageView addObject:[UIImage imageNamed:kHomeMainVoice4ImageFile]];
+//    [arrayImageView addObject:[UIImage imageNamed:kHomeMainVoice5ImageFile]];
+//    [arrayImageView addObject:[UIImage imageNamed:kHomeMainVoice6ImageFile]];
+//    [arrayImageView addObject:[UIImage imageNamed:kHomeMainVoice7ImageFile]];
+//    [arrayImageView addObject:[UIImage imageNamed:kHomeMainVoice8ImageFile]];
+//    [arrayImageView addObject:[UIImage imageNamed:kHomeMainVoice7ImageFile]];
+//    [arrayImageView addObject:[UIImage imageNamed:kHomeMainVoice6ImageFile]];
+//    [arrayImageView addObject:[UIImage imageNamed:kHomeMainVoice5ImageFile]];
+//    [arrayImageView addObject:[UIImage imageNamed:kHomeMainVoice4ImageFile]];
+//    [arrayImageView addObject:[UIImage imageNamed:kHomeMainVoice3ImageFile]];
+//    [arrayImageView addObject:[UIImage imageNamed:kHomeMainVoice2ImageFile]];
+//    
+	TabBarHomeAnimationItem *barItemSetting = [[TabBarHomeAnimationItem alloc] initWithText:@"设置"
+                                                                                  andImages:nil
+                                                                            andSelectImages:nil];
+	[viewParent insertItem:barItemSetting atIndex:eSettingIndex];
+    
+	// 设置选中项
+	[viewParent setSelectedItemIndex:_tabBarIndex];
+}
+
+- (void)setupViewAdViewSubs:(UIView *)viewParent
+{
+	//父窗口属性
+    CGRect parentFrame = [viewParent frame];
+    
+	// ===================================================================
+	// 默认启动图
+	// ===================================================================
+	UIImageView *imageViewDefault = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, viewParent.width, parentFrame.size.height)];
+    //[imageViewDefault setImage:[UIImage appLaunchImage]];
+
+	[viewParent addSubview:imageViewDefault];
+	
+    
+}
+
+// =======================================================================
+// TabBar的代理函数
+// =======================================================================
+- (void)tabBar:(TabBar *)tabBar didSelectItem:(TabBarItem *)item
+{
+	NSInteger selectIndex = [tabBar selectedItemIndex];
+    
+	if ((selectIndex == eFavIndex) || (selectIndex == eSettingIndex))
+	{
+		// 设置StatusBar
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault];
+	}
+	else
+	{
+		// 设置StatusBar
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+	}
+	
+    [self changeToVCIndex:(int)selectIndex];
+
+}
+
+
+@end

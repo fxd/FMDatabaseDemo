@@ -1,0 +1,30 @@
+//
+//  DatabaseConstants.m
+//  sight_iphone
+//
+//  Created by fengshaobo on 15/4/6.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+
+#import "DatabaseConstants.h"
+
+// _id, integer, primary key, for all tables
+#define kTableColumnPrimaryIDKey @"_id"
+
+//////////////////////////////// Databases //////////////////////////////////
+#pragma mark - databases
+NSString * const BooksDatabase                      = @"books.db";
+NSString * const UserDatabase                       = @"user.db";
+
+
+#pragma mark - Rework table
+NSString * const ReworkTable                   = @"rework";
+NSString * const ColumnID                = kTableColumnPrimaryIDKey;
+NSString * const ColumnChapter           = @"chapter";
+NSString * const ColumnTitle             = @"title";
+NSString * const ColumnBrief             = @"brief";
+NSString * const ColumnContent           = @"content";
+NSString * const ColumnIsRead            = @"isread";
+NSString * const ColumnIsFavorite        = @"isfavorite";
+

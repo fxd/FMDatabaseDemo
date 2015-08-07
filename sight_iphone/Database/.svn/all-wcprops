@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/quickjudge/!svn/ver/99/1/client/sight_iphone/Database
+END
+DatabaseHelper.m
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/quickjudge/!svn/ver/99/1/client/sight_iphone/Database/DatabaseHelper.m
+END
+DatabaseUtils.m
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/quickjudge/!svn/ver/99/1/client/sight_iphone/Database/DatabaseUtils.m
+END
+DatabaseManager.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/quickjudge/!svn/ver/99/1/client/sight_iphone/Database/DatabaseManager.h
+END
+AppUtils.h
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/quickjudge/!svn/ver/99/1/client/sight_iphone/Database/AppUtils.h
+END
+DatabaseConstants.h
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/quickjudge/!svn/ver/99/1/client/sight_iphone/Database/DatabaseConstants.h
+END
+BooksDatabaseCreator.h
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/quickjudge/!svn/ver/99/1/client/sight_iphone/Database/BooksDatabaseCreator.h
+END
+UserDatabaseCreator.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/quickjudge/!svn/ver/99/1/client/sight_iphone/Database/UserDatabaseCreator.h
+END
+DatabaseHelper.h
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/quickjudge/!svn/ver/99/1/client/sight_iphone/Database/DatabaseHelper.h
+END
+DatabaseManager.m
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/quickjudge/!svn/ver/99/1/client/sight_iphone/Database/DatabaseManager.m
+END
+DatabaseUtils.h
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/quickjudge/!svn/ver/99/1/client/sight_iphone/Database/DatabaseUtils.h
+END
+AppUtils.m
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/quickjudge/!svn/ver/99/1/client/sight_iphone/Database/AppUtils.m
+END
+DatabaseConstants.m
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/quickjudge/!svn/ver/99/1/client/sight_iphone/Database/DatabaseConstants.m
+END
+BooksDatabaseCreator.m
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/quickjudge/!svn/ver/99/1/client/sight_iphone/Database/BooksDatabaseCreator.m
+END
+UserDatabaseCreator.m
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/quickjudge/!svn/ver/99/1/client/sight_iphone/Database/UserDatabaseCreator.m
+END

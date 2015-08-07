@@ -1,0 +1,19 @@
+//
+//  BookDetailVC.h
+//  sight_iphone
+//
+//  Created by fengshaobo on 15/4/7.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+#import "LoadNaviVC.h"
+
+@interface BookDetailVC : LoadNaviVC
+
+@property (nonatomic , strong) IBOutlet UITableView *table;
+
+@property (nonatomic , strong) NSMutableArray *chapters;
+
+@property (nonatomic , strong) NSMutableArray *items;
+
+@end

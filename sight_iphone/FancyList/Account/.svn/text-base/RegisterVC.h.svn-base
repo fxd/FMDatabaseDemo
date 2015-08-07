@@ -1,0 +1,21 @@
+//
+//  RegisterVC.h
+//  sight_iphone
+//
+//  Created by fengshaobo on 15/4/22.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+#import "LoadNaviVC.h"
+
+@interface RegisterVC : LoadNaviVC
+
+@property (weak, nonatomic) IBOutlet UITextField *nameTf;           // 手机号
+@property (weak, nonatomic) IBOutlet UITextField *emailTf;          // 验证码
+@property (weak, nonatomic) IBOutlet UITextField *passwordTf;       // 密码
+@property (weak, nonatomic) IBOutlet UIButton *sureBtn;             // 确认
+
+- (IBAction)doCancelAction;
+- (IBAction)registerAction;
+
+@end

@@ -1,0 +1,29 @@
+//
+//  TestResult.h
+//  byy_iphone
+//
+//  Created by fengshaobo on 15/3/7.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+#import "SearchNetResult.h"
+
+@interface TestResult : SearchNetResult
+
+@property (nonatomic, strong) NSString *testname;
+@property (nonatomic, strong) NSNumber *testid;
+@property (nonatomic, strong) NSArray *testinfo;
+
+//@property (nonatomic, strong) NSString *vid;
+//@property (nonatomic, strong) NSString *url;
+
+
+@end
+
+
+@interface Testinfo : NSObject
+
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSNumber *age;
+
+@end

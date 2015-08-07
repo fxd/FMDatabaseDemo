@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>SJSBridge Test</title>
+</head>
+
+<body>
+
+    <div style="margin-top:50px;">
+        <input type="button" name="" value="Hello world" onclick="click1()" />
+        <input type="button" name="" value="change title" onclick="changeTitle()" />
+        <input type="button" name="" value="change navbar" onclick="changeNavBar()" />
+
+    </div>
+
+
+    <script type="text/javascript">
+        
+    function log(text){
+        var tmp = document.createElement('p');
+        tmp.innerText = text;
+        document.body.appendChild(tmp);
+    }
+    
+    function click1() {
+        jsBridge.postNotification('oc',{message:'hello oc'});
+    }
+    
+    function changeTitle() {
+        jsBridge.postNotification('type_title',{message:'ss from js'});
+    }
+    
+    function changeNavBar() {
+        jsBridge.postNotification('type_navbar',{message:'订单'});
+    }
+    
+    </script> 
+
+
+</body>
+</html>
+

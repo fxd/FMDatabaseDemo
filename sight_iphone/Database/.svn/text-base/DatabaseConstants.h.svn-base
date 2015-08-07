@@ -1,0 +1,50 @@
+//
+//  DatabaseConstants.h
+//  sight_iphone
+//
+//  Created by fengshaobo on 15/4/6.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+
+#import <Foundation/Foundation.h>
+
+
+//////////////////////////////// User Databases //////////////////////////////////
+#pragma mark - user databases
+
+// 用户数据库
+extern NSString * const UserDatabase;
+
+
+//////////////////////////////// User Databases //////////////////////////////////
+#pragma mark - books databases
+
+// 书数据库
+extern NSString * const BooksDatabase;
+
+// Rework
+extern NSString * const ReworkTable;
+
+// primary key
+extern NSString * const ColumnID;
+
+// 章节
+extern NSString * const ColumnChapter;
+
+// 标题
+extern NSString * const ColumnTitle;
+
+// 简介
+extern NSString * const ColumnBrief;
+
+// 内容
+extern NSString * const ColumnContent;
+
+// 已读
+extern NSString * const ColumnIsRead;
+
+// 收藏
+extern NSString * const ColumnIsFavorite;
+
+

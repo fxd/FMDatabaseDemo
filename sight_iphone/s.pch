@@ -1,0 +1,75 @@
+//
+//  s.pch
+//  sight_iphone
+//
+//  Created by fengshaobo on 15/2/9.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+#ifndef sight_iphone_s_pch
+#define sight_iphone_s_pch
+
+#ifdef __OBJC__
+
+#import <UIKit/UIKit.h>
+#import "CommonDef.h"
+#import "Def.h"
+#import "DatabaseConstants.h"
+#import "NetworkAPI.h"
+
+#endif
+
+
+
+/*****************************************************
+ * DEBUG环境下会输出Log日志，Release环境下不会输出
+ *****************************************************/
+#ifdef DEBUG
+#define SLog(fmt, ...) NSLog((@"[%s] [Line:%d] " fmt),  __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
+#define SLog(fmt, ...) do{} while(0)
+#endif
+
+
+
+
+/*****************************************************
+ * DEBUG环境下会输出View的Frame日志，Release环境下不会输出
+ *****************************************************/
+
+#define SLogRect(frame) SLog(@"[%s]:{%.2f %.2f; %.2f %.2f}", (#frame), (frame).origin.x, (frame).origin.y, (frame).size.width, (frame).size.height)
+
+#define SLogSize(size) SLog(@"[%s]:{%.2f, %.2f}", (#size), size.width, size.height);
+
+////////////////////////////////////////////////////////////////////////////////////
+// Asserts
+#ifdef DEBUG
+#define SSAssertDebug(COND, fmt, ...) NSAssert((COND), (@"%s (Line:%d) " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#else
+#define SSAssertDebug(COND, fmt, ...) do {}while(0)
+#endif
+
+#define SSParameterAssert(COND) SSAssertDebug(COND, @"Invalid parameter, not satisfying: \"%s\"", #COND)
+
+#define ThrowNotImplementedException() \
+do {\
+SSAssertDebug(NO, @"%s is not implemented", __PRETTY_FUNCTION__);\
+}while(0)
+
+#define IgnorePerformSelectorLeakWarningInARC(Stuff) \
+do { \
+_Pragma("clang diagnostic push") \
+_Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
+Stuff \
+_Pragma("clang diagnostic pop") \
+} while (0)
+
+
+
+/*****************************************************
+ * 字符串判空
+ *****************************************************/
+#define isEmptyString(s)  (((s) == nil) || ([(s) stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]].length == 0))
+
+
+#endif

@@ -1,0 +1,13 @@
+//
+//  TestWebVC.h
+//  sight_iphone
+//
+//  Created by fengshaobo on 15/5/3.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+#import "LoadNaviVC.h"
+
+@interface TestWebVC : LoadNaviVC<UIWebViewDelegate>
+@property (nonatomic, strong) UIWebView *webView;
+@end

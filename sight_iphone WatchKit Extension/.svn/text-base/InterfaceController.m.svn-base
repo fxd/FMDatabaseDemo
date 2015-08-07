@@ -1,0 +1,63 @@
+//
+//  InterfaceController.m
+//  sight_iphone WatchKit Extension
+//
+//  Created by fengshaobo on 15/4/22.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+#import "InterfaceController.h"
+#import "SendDataCotroller.h"
+#import "TestCell.h"
+
+
+@interface InterfaceController()
+
+@end
+
+
+@implementation InterfaceController
+
+- (void)awakeWithContext:(id)context {
+    [super awakeWithContext:context];
+    
+    // Configure interface objects here.
+    [self.interfaceTable setNumberOfRows:3 withRowType:@"default"];
+    
+    for (NSInteger i=0; i<3; i++) {
+        NSString *str = [NSString stringWithFormat:@"cell %ld",i];
+        TestCell *cell = [self.interfaceTable rowControllerAtIndex:i];
+        [cell.label setText:str];
+    }
+}
+
+- (void)willActivate {
+    // This method is called when watch view controller is about to be visible to user
+    [super willActivate];
+    
+}
+
+- (void)didDeactivate {
+    // This method is called when watch view controller is no longer visible
+    [super didDeactivate];
+}
+
+- (void)table:(WKInterfaceTable *)table didSelectRowAtIndex:(NSInteger)rowIndex {
+    switch (rowIndex) {
+        case 0: {
+            [self pushControllerWithName:@"SendDataCotroller" context:nil];
+            break;
+        }
+            
+        default: {
+            [self pushControllerWithName:@"imageDetailController" context:nil];
+            break;
+        }
+    }
+}
+
+
+@end
+
+
+

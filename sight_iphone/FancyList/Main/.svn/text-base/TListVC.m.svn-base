@@ -1,0 +1,122 @@
+//
+//  TListVC.m
+//  sight_iphone
+//
+//  Created by fengshaobo on 15/4/26.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+#import "TListVC.h"
+
+#import "UITableView+Utility.h"
+#import "TListCell.h"
+#import "TListDetailVC.h"
+#import "TabBarHomeItem.h"
+
+@interface TListVC ()
+@property (nonatomic, assign) NSInteger tabBarIndex;
+@end
+
+@implementation TListVC
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    // step1 : 重设frame
+    CGRect rect = self.view.frame;
+    [[NSBundle mainBundle] loadNibNamed:@"TListVC" owner:self options:nil];
+    self.view.frame = rect;
+
+    // step2 : navbar
+    [self layoutRootViewDefault:self.view];
+    [naviBar setTitle:@"TODAY"];
+    [self stopLoading:YES];
+    
+    NaviBarItem *backItem = [[NaviBarItem alloc] initBackItem:self action:@selector(goBack:)];
+    [naviBar setLeftBarItem:backItem];
+    
+    
+    self.table.frame = viewContent.bounds;
+    [viewContent addSubview:self.table];
+
+    // Tabbar
+    self.tabBar = [[TabBar alloc] initHomeWithFrame:CGRectZero];
+    [_tabBar setFrame:CGRectMake(0, self.view.height - [_tabBar frame].size.height, self.view.width, 0)];
+    [_tabBar setDelegate:self];
+    [self setupTabbarSubs:_tabBar];
+    [self.view addSubview:_tabBar];
+
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - UITableViewDelegate
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 10;//[self.list count];
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TListCell *cell = [tableView cellForNibName:@"TListCell"];
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TListDetailVC *listDetailVC = [[TListDetailVC alloc] initWithName:kTListDetailVC];
+    [[VCManager mainVCC] pushVC:listDetailVC WithAnimation:[VCAnimationClassic defaultAnimation]];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 44;
+}
+
+#pragma mark ---- tabbar
+// 创建TabBar的子界面
+- (void)setupTabbarSubs:(TabBar *)viewParent
+{
+    TabBarHomeItem *barItemHome = [[TabBarHomeItem alloc] initWithText:@"分享"
+                                                              andImage:[UIImage imageNamed:img_home_normal]
+                                                        andSelectImage:[UIImage imageNamed:img_home_highlight]];
+    [viewParent insertItem:barItemHome atIndex:eShareIndex];
+    
+    TabBarHomeItem *barItemFavorite = [[TabBarHomeItem alloc] initWithText:@"发布"
+                                                                  andImage:[UIImage imageNamed:nil]
+                                                            andSelectImage:[UIImage imageNamed:nil]];
+    [viewParent insertItem:barItemFavorite atIndex:ePublishIndex];
+    
+    TabBarHomeItem *barItemWords = [[TabBarHomeItem alloc] initWithText:@"排序"
+                                                               andImage:[UIImage imageNamed:nil]
+                                                         andSelectImage:[UIImage imageNamed:nil]];
+    [viewParent insertItem:barItemWords atIndex:eSortIndex];
+    
+    
+    TabBarHomeItem *barItemMore = [[TabBarHomeItem alloc] initWithText:@"更多"
+                                                               andImage:[UIImage imageNamed:nil]
+                                                         andSelectImage:[UIImage imageNamed:nil]];
+    [viewParent insertItem:barItemMore atIndex:eMoreIndex];
+    
+    [viewParent setSelectedItemIndex:_tabBarIndex];
+}
+
+- (void)tabBar:(TabBar *)tabBar didSelectItem:(TabBarItem *)item
+{
+    NSInteger selectIndex = [tabBar selectedItemIndex];
+    SLog(@"cur index = %ld",(long)selectIndex);
+}
+
+
+
+@end

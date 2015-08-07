@@ -1,0 +1,95 @@
+//
+//  BookDetailVC.m
+//  sight_iphone
+//
+//  Created by fengshaobo on 15/4/7.
+//  Copyright (c) 2015年 fengshaobo. All rights reserved.
+//
+
+#import "BookDetailVC.h"
+#import "BookDetailCell.h"
+#import "UITableView+Utility.h"
+
+#import "SQLManager.h"
+#import "DatabaseConstants.h"
+#import "BookInfo.h"
+
+@interface BookDetailVC ()
+
+@end
+
+@implementation BookDetailVC
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    [self layoutRootViewDefault:self.view];
+    [naviBar setTitle:@"Rework"];
+    [self stopLoading:YES];
+    
+    NaviBarItem *backItem = [[NaviBarItem alloc] initBackItem:self action:@selector(goBack:)];
+    [naviBar setLeftBarItem:backItem];
+    
+    self.table.frame = viewContent.bounds;
+    [viewContent addSubview:self.table];
+    
+    //self.items = [SQLManager queryFromTable:ReworkTable from:0 count:3];
+    
+    self.chapters = [NSMutableArray arrayWithObjects:
+                             @"TAKEDOWNS",
+                             @"GO",nil];
+    
+    self.items = [NSMutableArray array];
+    for (NSString *chapter in self.chapters) {
+        NSArray *array = [SQLManager queryFromTable:ReworkTable chapter:chapter];
+        [self.items addObject:array];
+    }
+    
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+
+#pragma mark - UITableViewDelegate
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return self.chapters.count;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSArray *infosPerChapter = [self.items objectAtIndex:section];
+    return [infosPerChapter count];
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray *infosPerChapter = [self.items objectAtIndex:indexPath.section];
+
+    BookInfo *bookInfo = [infosPerChapter objectAtIndex:indexPath.row];
+    BookDetailCell *cell = [tableView cellForNibName:@"BookDetailCell"];
+    cell.content.text = bookInfo.chapter;
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 44;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"header";
+}
+
+
+
+@end
